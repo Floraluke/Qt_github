@@ -1,0 +1,34 @@
+﻿# Qt编译目录 - 忽略所有build相关文件夹
+[Bb]uild*/
+[Dd]ebug/
+[Rr]elease/
+*.pro.user
+*.pro.user.*
+*.autosave
+
+# 编译输出文件
+*.o
+*.a
+*.so
+*.dll
+*.exe
+
+# Qt自动生成的文件
+moc_*
+ui_*
+qrc_*
+*.qm
+Makefile*
+.qmake.stash
+
+# 备份文件
+*.backup
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+*.lnk
+
+# 任何其他可能的编译目录
+Desktop_Qt_*/
