@@ -11,8 +11,8 @@
 FindDialog::FindDialog(QWidget *parent) : QDialog(parent)
 {
     setWindowTitle("查找");
-    setModal(false);
 
+    setModal(false);
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     // 查找目标
