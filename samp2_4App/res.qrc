@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>store-fill.svg</file>
+    </qresource>
+</RCC>
