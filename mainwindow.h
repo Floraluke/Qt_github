@@ -153,6 +153,7 @@ private:
 
     // 对话框
     FindDialog *findDialog;
+
     ReplaceDialog *replaceDialog;
     QDialog *aboutDialog;
 
