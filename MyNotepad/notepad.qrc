@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/file-edit-custom.png</file>
+        <file>image/folder-open-outline.png</file>
+        <file>image/text-box-edit-outline.png</file>
+        <file>image/invoice-text-plus-outline.png</file>
+        <file>image/application-outline.png</file>
+        <file>image/content-copy.png</file>
+        <file>image/content-cut.png</file>
+        <file>image/content-paste.png</file>
+        <file>image/content-save-check-outline.png</file>
+        <file>image/content-save-move.png</file>
+        <file>image/file-find-outline.png</file>
+        <file>image/format-list-numbered.png</file>
+        <file>image/format-size.png</file>
+        <file>image/keyboard-return.png</file>
+        <file>image/list-status.png</file>
+        <file>image/reply-outline.png</file>
+        <file>image/restore.png</file>
+        <file>image/share-outline.png</file>
+        <file>image/swap-horizontal.png</file>
+        <file>image/tools.png</file>
+        <file>image/replace.png</file>
+    </qresource>
+</RCC>
