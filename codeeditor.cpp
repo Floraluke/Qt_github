@@ -105,6 +105,7 @@ void CodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         // 移动到下一个文本块
         block = block.next();
         top = bottom;
+
         bottom = top + (int) blockBoundingRect(block).height();
         ++blockNumber;
     }
