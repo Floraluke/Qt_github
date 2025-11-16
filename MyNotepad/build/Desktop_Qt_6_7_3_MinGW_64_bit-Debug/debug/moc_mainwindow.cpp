@@ -36,7 +36,9 @@ namespace {
 #ifdef QT_MOC_HAS_STRINGDATA
 struct qt_meta_stringdata_CLASSFindDialogENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSFindDialogENDCLASS = QtMocHelpers::stringData(
-    "FindDialog"
+    "FindDialog",
+    "onFindButtonClicked",
+    ""
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -49,12 +51,18 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSFindDialogENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   20,    2, 0x08,    1 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void,
 
        0        // eod
 };
@@ -67,16 +75,23 @@ Q_CONSTINIT const QMetaObject FindDialog::staticMetaObject = { {
     nullptr,
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSFindDialogENDCLASS_t,
         // Q_OBJECT / Q_GADGET
-        QtPrivate::TypeAndForceComplete<FindDialog, std::true_type>
+        QtPrivate::TypeAndForceComplete<FindDialog, std::true_type>,
+        // method 'onFindButtonClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
 
 void FindDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    (void)_o;
-    (void)_id;
-    (void)_c;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<FindDialog *>(_o);
+        (void)_t;
+        switch (_id) {
+        case 0: _t->onFindButtonClicked(); break;
+        default: ;
+        }
+    }
     (void)_a;
 }
 
@@ -96,6 +111,17 @@ void *FindDialog::qt_metacast(const char *_clname)
 int FindDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QDialog::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 1)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 1;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 1)
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+        _id -= 1;
+    }
     return _id;
 }
 namespace {
@@ -103,7 +129,11 @@ namespace {
 #ifdef QT_MOC_HAS_STRINGDATA
 struct qt_meta_stringdata_CLASSReplaceDialogENDCLASS_t {};
 constexpr auto qt_meta_stringdata_CLASSReplaceDialogENDCLASS = QtMocHelpers::stringData(
-    "ReplaceDialog"
+    "ReplaceDialog",
+    "onFindNextClicked",
+    "",
+    "onReplaceClicked",
+    "onReplaceAllClicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -116,12 +146,22 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSReplaceDialogENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   32,    2, 0x08,    1 /* Private */,
+       3,    0,   33,    2, 0x08,    2 /* Private */,
+       4,    0,   34,    2, 0x08,    3 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -134,16 +174,29 @@ Q_CONSTINIT const QMetaObject ReplaceDialog::staticMetaObject = { {
     nullptr,
     qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSReplaceDialogENDCLASS_t,
         // Q_OBJECT / Q_GADGET
-        QtPrivate::TypeAndForceComplete<ReplaceDialog, std::true_type>
+        QtPrivate::TypeAndForceComplete<ReplaceDialog, std::true_type>,
+        // method 'onFindNextClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onReplaceClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onReplaceAllClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
 } };
 
 void ReplaceDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    (void)_o;
-    (void)_id;
-    (void)_c;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<ReplaceDialog *>(_o);
+        (void)_t;
+        switch (_id) {
+        case 0: _t->onFindNextClicked(); break;
+        case 1: _t->onReplaceClicked(); break;
+        case 2: _t->onReplaceAllClicked(); break;
+        default: ;
+        }
+    }
     (void)_a;
 }
 
@@ -163,6 +216,17 @@ void *ReplaceDialog::qt_metacast(const char *_clname)
 int ReplaceDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QDialog::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 3)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 3;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 3)
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
+        _id -= 3;
+    }
     return _id;
 }
 namespace {
@@ -194,6 +258,10 @@ constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers::string
     "on_action_L_2_triggered",
     "on_action_7_triggered",
     "on_action_A_3_triggered",
+    "onFindButtonClicked",
+    "onFindNextClicked",
+    "onReplaceClicked",
+    "onReplaceAllClicked",
     "closeTab",
     "index",
     "currentTabChanged",
@@ -213,7 +281,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-      28,   14, // methods
+      32,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -221,34 +289,38 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  182,    2, 0x08,    1 /* Private */,
-       3,    0,  183,    2, 0x08,    2 /* Private */,
-       4,    0,  184,    2, 0x08,    3 /* Private */,
-       5,    0,  185,    2, 0x08,    4 /* Private */,
-       6,    0,  186,    2, 0x08,    5 /* Private */,
-       7,    0,  187,    2, 0x08,    6 /* Private */,
-       8,    0,  188,    2, 0x08,    7 /* Private */,
-       9,    0,  189,    2, 0x08,    8 /* Private */,
-      10,    0,  190,    2, 0x08,    9 /* Private */,
-      11,    0,  191,    2, 0x08,   10 /* Private */,
-      12,    0,  192,    2, 0x08,   11 /* Private */,
-      13,    0,  193,    2, 0x08,   12 /* Private */,
-      14,    0,  194,    2, 0x08,   13 /* Private */,
-      15,    0,  195,    2, 0x08,   14 /* Private */,
-      16,    0,  196,    2, 0x08,   15 /* Private */,
-      17,    0,  197,    2, 0x08,   16 /* Private */,
-      18,    0,  198,    2, 0x08,   17 /* Private */,
-      19,    0,  199,    2, 0x08,   18 /* Private */,
-      20,    0,  200,    2, 0x08,   19 /* Private */,
-      21,    0,  201,    2, 0x08,   20 /* Private */,
-      22,    0,  202,    2, 0x08,   21 /* Private */,
-      23,    0,  203,    2, 0x08,   22 /* Private */,
-      24,    1,  204,    2, 0x08,   23 /* Private */,
-      26,    1,  207,    2, 0x08,   25 /* Private */,
-      27,    0,  210,    2, 0x08,   27 /* Private */,
-      28,    0,  211,    2, 0x08,   28 /* Private */,
-      29,    0,  212,    2, 0x08,   29 /* Private */,
-      30,    0,  213,    2, 0x08,   30 /* Private */,
+       1,    0,  206,    2, 0x08,    1 /* Private */,
+       3,    0,  207,    2, 0x08,    2 /* Private */,
+       4,    0,  208,    2, 0x08,    3 /* Private */,
+       5,    0,  209,    2, 0x08,    4 /* Private */,
+       6,    0,  210,    2, 0x08,    5 /* Private */,
+       7,    0,  211,    2, 0x08,    6 /* Private */,
+       8,    0,  212,    2, 0x08,    7 /* Private */,
+       9,    0,  213,    2, 0x08,    8 /* Private */,
+      10,    0,  214,    2, 0x08,    9 /* Private */,
+      11,    0,  215,    2, 0x08,   10 /* Private */,
+      12,    0,  216,    2, 0x08,   11 /* Private */,
+      13,    0,  217,    2, 0x08,   12 /* Private */,
+      14,    0,  218,    2, 0x08,   13 /* Private */,
+      15,    0,  219,    2, 0x08,   14 /* Private */,
+      16,    0,  220,    2, 0x08,   15 /* Private */,
+      17,    0,  221,    2, 0x08,   16 /* Private */,
+      18,    0,  222,    2, 0x08,   17 /* Private */,
+      19,    0,  223,    2, 0x08,   18 /* Private */,
+      20,    0,  224,    2, 0x08,   19 /* Private */,
+      21,    0,  225,    2, 0x08,   20 /* Private */,
+      22,    0,  226,    2, 0x08,   21 /* Private */,
+      23,    0,  227,    2, 0x08,   22 /* Private */,
+      24,    0,  228,    2, 0x08,   23 /* Private */,
+      25,    0,  229,    2, 0x08,   24 /* Private */,
+      26,    0,  230,    2, 0x08,   25 /* Private */,
+      27,    0,  231,    2, 0x08,   26 /* Private */,
+      28,    1,  232,    2, 0x08,   27 /* Private */,
+      30,    1,  235,    2, 0x08,   29 /* Private */,
+      31,    0,  238,    2, 0x08,   31 /* Private */,
+      32,    0,  239,    2, 0x08,   32 /* Private */,
+      33,    0,  240,    2, 0x08,   33 /* Private */,
+      34,    0,  241,    2, 0x08,   34 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -273,8 +345,12 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   25,
-    QMetaType::Void, QMetaType::Int,   25,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   29,
+    QMetaType::Void, QMetaType::Int,   29,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -336,6 +412,14 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_action_A_3_triggered'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onFindButtonClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onFindNextClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onReplaceClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onReplaceAllClicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'closeTab'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
@@ -382,12 +466,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 19: _t->on_action_L_2_triggered(); break;
         case 20: _t->on_action_7_triggered(); break;
         case 21: _t->on_action_A_3_triggered(); break;
-        case 22: _t->closeTab((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 23: _t->currentTabChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
-        case 24: _t->documentWasModified(); break;
-        case 25: _t->updateStatusBar(); break;
-        case 26: _t->updateEditActions(); break;
-        case 27: _t->autoSave(); break;
+        case 22: _t->onFindButtonClicked(); break;
+        case 23: _t->onFindNextClicked(); break;
+        case 24: _t->onReplaceClicked(); break;
+        case 25: _t->onReplaceAllClicked(); break;
+        case 26: _t->closeTab((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 27: _t->currentTabChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 28: _t->documentWasModified(); break;
+        case 29: _t->updateStatusBar(); break;
+        case 30: _t->updateEditActions(); break;
+        case 31: _t->autoSave(); break;
         default: ;
         }
     }
@@ -412,13 +500,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 28)
+        if (_id < 32)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 28;
+        _id -= 32;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 28)
+        if (_id < 32)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 28;
+        _id -= 32;
     }
     return _id;
 }

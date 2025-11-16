@@ -16,10 +16,10 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
-#include <codeeditor.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -50,7 +50,7 @@ public:
     QAction *action_A_3;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout;
-    CodeEditor *TextEdit;
+    QPlainTextEdit *TextEdit;
     QMenuBar *menubar;
     QMenu *menu;
     QMenu *menu_2;
@@ -185,7 +185,7 @@ public:
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName("horizontalLayout");
         horizontalLayout->setContentsMargins(1, 1, 1, 1);
-        TextEdit = new CodeEditor(centralwidget);
+        TextEdit = new QPlainTextEdit(centralwidget);
         TextEdit->setObjectName("TextEdit");
 
         horizontalLayout->addWidget(TextEdit);

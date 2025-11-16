@@ -2,65 +2,188 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPlainTextEdit>
+#include <QTabWidget>
+#include <QStatusBar>
+#include <QMenuBar>
+#include <QToolBar>
+#include <QAction>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QFontDialog>
+#include <QColorDialog>
+#include <QCloseEvent>
+#include <QTextStream>
+#include <QFileInfo>
+#include <QDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QTextCursor>
+#include <QTextDocument>
+#include <QTextBlock>
+#include <QTimer>
+#include <QPainter>
+#include <QTextOption>
+#include <QMap>
+#include <QTextEdit>
+#include "codeeditor.h"
 
-QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
 }
-QT_END_NAMESPACE
+
+// 查找对话框
+class FindDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit FindDialog(QWidget *parent = nullptr);
+    QString getFindText() const;
+    bool caseSensitive() const;
+    bool searchUp() const;
+
+    void findInEditor(CodeEditor *editor);
+
+private slots:
+    void onFindButtonClicked();
+
+private:
+    QLineEdit *findEdit;
+    QCheckBox *caseCheckBox;
+    QRadioButton *upRadio;
+    QRadioButton *downRadio;
+    QPushButton *findButton;
+};
+
+// 替换对话框
+class ReplaceDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit ReplaceDialog(QWidget *parent = nullptr);
+    QString getFindText() const;
+    QString getReplaceText() const;
+    bool caseSensitive() const;
+    bool searchUp() const;
+
+    void findInEditor(CodeEditor *editor);
+    void replaceInEditor(CodeEditor *editor);
+    void replaceAllInEditor(CodeEditor *editor);
+
+private slots:
+    void onFindNextClicked();
+    void onReplaceClicked();
+    void onReplaceAllClicked();
+
+private:
+    QLineEdit *findEdit;
+    QLineEdit *replaceEdit;
+    QCheckBox *caseCheckBox;
+    QRadioButton *upRadio;
+    QRadioButton *downRadio;
+    QPushButton *findNextButton;
+    QPushButton *replaceButton;
+    QPushButton *replaceAllButton;
+};
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    // 文件操作
+    void on_actionNew_triggered();
+    void on_action_O_triggered();
+    void on_action_S_triggered();
+    void on_action_A_triggered();
+    void on_action_X_triggered();
+
+    // 编辑操作
+    void on_action_Z_triggered();
+    void on_action_Shift_Z_triggered();
+    void on_action_X_2_triggered();
+    void on_action_C_triggered();
+    void on_action_V_triggered();
+    void on_action_F_triggered();
+    void on_action_R_triggered();
+    void on_action_A_2_triggered();
+
+    // 格式操作
+    void on_action_W_triggered();
+    void on_action_L_triggered();
+    void on_action_F_2_triggered();
+    void on_action_3_triggered();
+    void on_action_4_triggered();
+    void on_action_5_triggered();
+
+    // 查看操作
+    void on_action_L_2_triggered();
+    void on_action_7_triggered();
+
+    // 帮助
+    void on_action_A_3_triggered();
+
+    // 查找替换功能
+    void onFindButtonClicked();
+    void onFindNextClicked();
+    void onReplaceClicked();
+    void onReplaceAllClicked();
+
+    // 标签页管理
+    void closeTab(int index);
+    void currentTabChanged(int index);
+
+    // 文档修改状态
+    void documentWasModified();
+
+    // 更新状态栏
+    void updateStatusBar();
+
+    // 更新编辑动作状态
+    void updateEditActions();
+
+    // 自动保存
+    void autoSave();
+
 private:
+    void setupUI();
+    void setupConnections();
+    void createAboutDialog();
+    void createFindDialog();
+    void createReplaceDialog();
+
+    CodeEditor* currentEditor() const;
+    QString currentFileName() const;
+    void setCurrentFileName(const QString &fileName);
+    bool maybeSave();
+    void loadFile(const QString &fileName);
+    bool saveFile(const QString &fileName);
+
     Ui::MainWindow *ui;
 
-    // 计算器状态变量
-    double m_value;              // 存储当前值或运算结果
-    QString m_pendingOperation;  // 待处理的操作符
-    bool m_waitingForOperand;    // 是否等待输入操作数
-    double m_memory;             // 内存存储值
+    QTabWidget *tabWidget;
+    QStatusBar *statusBar;
 
-private slots:
-    // 数字按钮处理
-    void digitClicked();
-    void digitButtonClicked(int digit);
+    // 对话框
+    FindDialog *findDialog;
+    ReplaceDialog *replaceDialog;
+    QDialog *aboutDialog;
 
-    // 操作符处理
-    void operatorClicked();
+    // 自动保存定时器
+    QTimer *autoSaveTimer;
 
-    // 等号处理
-    void equalClicked();
-
-    // 清除处理
-    void clearClicked();
-
-    // 退格处理
-    void backspaceClicked();
-
-    // 小数点处理
-    void pointClicked();
-
-    // 百分比处理
-    void percentClicked();
-
-    // 内存功能
-    void memoryClear();
-    void memoryRecall();
-    void memoryAdd();
-    void memorySubtract();
-
-    // 计算函数
-    bool calculate(double rightOperand, const QString &pendingOperator);
-
-protected:
-    // 键盘事件处理
-    void keyPressEvent(QKeyEvent *event) override;
+    // 文件修改状态
+    QMap<CodeEditor*, bool> modifiedStatus;
+    QMap<CodeEditor*, QString> fileNames;
 };
 
 #endif // MAINWINDOW_H
