@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>聊天室客户端</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* 基于原有样式修改：背景浅蓝 + 字体白色 + 协调边框 */
+#titleLabel {
+    background: #5DADEC; /* 柔和浅蓝色背景（小清新主色调） */
+    color: white; /* 白色字体，和浅蓝背景对比清晰 */
+    font-size: 20px; /* 保留原有字号 */
+    border: none; /* 保留无边框 */
+    border-bottom: 1px solid #4A90E2; /* 稍深的蓝色边框，和背景呼应更协调 */
+    padding: 5px; /* 保留原有内边距 */
+    
+}
+#titleLabel2
+{
+    background: #5DADEC; /* 柔和浅蓝色背景（小清新主色调） */
+    color: white; /* 白色字体，和浅蓝背景对比清晰 */
+    font-size: 20px; /* 保留原有字号 */
+    border: none; /* 保留无边框 */
+    border-bottom: 1px solid #4A90E2; /* 稍深的蓝色边框，和背景呼应更协调 */
+    padding: 5px; /* 保留原有内边距 */
+    
+}
+/* mainFrame：保留纯白无边框，可可选加轻微阴影提升层次感 */
+#mainFrame {
+    border: none;
+    background: white;
+
+}
+
+
+#loginFrame {
+   background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #d6d6d6 stop:1 #a8a8a8);
+    border: 1px solid gray;
+    padding-top: 20px;
+    border-radius: 25px;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="styleSheet">
+       <string notr="true">#title_label {
+    color: blue;
+    font-size: 20px;
+    border: none;
+    border-bottom: 1px solid black;
+    padding-top: 5px;
+}
+
+#smallFrame {
+    border: none;
+    background: white;
+}
+
+#loginFrame {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #d6d6d6 stop:1 #a8a8a8);
+    border: 1px solid gray;
+    padding-top: 20px;
+    border-radius: 25px;
+}</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="chatPage">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="titleLabel2">
+          <property name="text">
+           <string>陆泳倩的聊天室</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QTextEdit" name="roomTextEdit"/>
+          </item>
+          <item>
+           <widget class="QListWidget" name="userListWidget">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLineEdit" name="sayLineEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="sayButton">
+            <property name="text">
+             <string>发送</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="logoutButton">
+            <property name="text">
+             <string>退出</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="loginPage">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0" colspan="3">
+         <widget class="QLabel" name="titleLabel">
+          <property name="text">
+           <string>陆泳倩的聊天室</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="1">
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="0">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="1" rowspan="2">
+         <widget class="QFrame" name="loginFrame">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>250</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LayoutDirection::LeftToRight</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">/* 1. 标题Label（titleLabel）：薄荷绿文字 */
+#titleLabel {
+    font-family: &quot;微软雅黑&quot;, &quot;思源黑体&quot;;
+    font-size: 18px;
+    color: #67C23A; /* 淡薄荷绿文字 */
+    qproperty-alignment: 'AlignCenter';
+    padding: 10px 0;
+}
+
+/* 2. 主框架（mainFrame）：极浅绿背景 */
+#mainFrame {
+    background-color: #F0F9F0; /* 淡绿底，接近白色更清爽 */
+    border-radius: 5px;
+    border: 1px solid #E1F3E1; /* 浅绿边框 */
+}
+
+
+#loginFrame {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #F5F9FF, stop:1 #E4EDFC);
+    border: 1px solid #D1E0FC; /* 替换深灰边框为淡蓝灰，和渐变呼应 */
+    padding-top: 20px;
+    border-radius: 25px; /* 保留原有大圆角，更显柔和 */
+    
+}
+</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Plain</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_8">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string>服务器地址</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>昵称</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="serverEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>127.0.0.1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="usernameEdit">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>lyq</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_7">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>13</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="loginButton">
+             <property name="text">
+              <string>登录聊天室</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
