@@ -12,15 +12,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. 初始化 ComboBox (房型筛选)
-    // 加上 "全部房型" 和具体的房型
+    // 1. 先初始化数据模型！(让 model 不再是空指针)
+    // 这样即便后面触发了信号，槽函数里的 model->setFilter 也是安全的
+    initModel();
+
+    // 2. 然后再初始化 ComboBox
     ui->comboType->addItem("全部房型");
     ui->comboType->addItem("标准单人间");
     ui->comboType->addItem("豪华双人间");
-    ui->comboType->addItem("总统套房");
+    ui->comboType->addItem("总统套房"); // 这行会触发信号，但现在 model 已经存在了，所以不会崩
 
-    // 2. 初始化数据模型
-    initModel();
 }
 
 MainWindow::~MainWindow()
