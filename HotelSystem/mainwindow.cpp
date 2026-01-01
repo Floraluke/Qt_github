@@ -84,7 +84,9 @@ void MainWindow::on_comboType_currentTextChanged(const QString &arg1)
         // 这里的语法是 SQL 的 WHERE 子句
         model->setFilter(QString("room_type = '%1'").arg(arg1));
     }
-    model->select(); // 刷新
+
+
+     model->select(); // 刷新
 }
 
 // --- 功能 2: 入住 (Tab 1) ---
