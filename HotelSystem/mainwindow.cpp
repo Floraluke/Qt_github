@@ -77,6 +77,19 @@ void MainWindow::initModel()
 
     // 隐藏不想显示的列（比如订单号）
     ui->viewHistory->hideColumn(0);
+
+    // 【新增】双击 Tab 1 的表格，触发 Smart Action
+    connect(ui->tableView, &QTableView::doubleClicked, this, [=](const QModelIndex &index){
+        // 获取状态
+        QSqlRecord record = model->record(index.row());
+        QString status = record.value("status_desc").toString();
+
+        if (status == "空闲") {
+            on_btnCheckIn_clicked(); // 调用入住
+        } else {
+            on_btnCheckOut_clicked(); // 调用退房
+        }
+    });
 }
 
 // --- 功能 1: 房型筛选 (Tab 1) ---
