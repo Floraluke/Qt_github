@@ -25,6 +25,7 @@ void LoginDialog::on_btnLogin_clicked()
     QString user = ui->edtUser->text().trimmed();
     QString pwd = ui->edtPwd->text();
 
+
     // 【这里设置你的账号密码】
     if (user == "admin" && pwd == "123456") {
         accept(); // 这是一个 QDialog 的标准方法，表示“成功/同意”，窗口会关闭并返回 QDialog::Accepted

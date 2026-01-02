@@ -10,6 +10,7 @@
 
 static bool createConnection()
 {
+
     // 1. 添加数据库驱动
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("hotel.db");
