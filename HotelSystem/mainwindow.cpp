@@ -19,11 +19,12 @@ MainWindow::MainWindow(QWidget *parent)
     // 这样即便后面触发了信号，槽函数里的 model->setFilter 也是安全的
     initModel();
 
-    // 2. 然后再初始化 ComboBox
     ui->comboType->addItem("全部房型");
     ui->comboType->addItem("标准单人间");
     ui->comboType->addItem("豪华双人间");
-    ui->comboType->addItem("总统套房"); // 这行会触发信号，但现在 model 已经存在了，所以不会崩
+    ui->comboType->addItem("商务大床房"); // 【新增】
+    ui->comboType->addItem("行政套房");   // 【新增】
+    ui->comboType->addItem("总统套房");
 
 }
 
@@ -54,6 +55,10 @@ void MainWindow::initModel()
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // 自动铺满宽度
+    // Tab 1 的表格
+    ui->tableView->setAlternatingRowColors(true); // 【新增】开启隔行变色
+    // Tab 2 的表格
+    ui->viewHistory->setAlternatingRowColors(true); // 【新增】开启隔行变色
 
     // ================== Tab 2: 历史订单 ==================
     historyModel = new QSqlTableModel(this);
@@ -240,26 +245,49 @@ void MainWindow::on_btnExport_clicked()
 
 void MainWindow::on_btnStats_clicked()
 {
-    // 利用 SQL 的 SUM 函数直接计算，不需要遍历表格（高效！）
-    QSqlQuery query;
-    // 计算 order_info 表里所有已退房订单的金额
-    // 注意：我们没有直接存订单总价，而是用 room_id 关联查价格
-    // 这里为了简单，我们假设 check_out 弹窗算完钱后，应该把钱存进 order_info 表。
-
-    /* Wait! 之前的数据库设计里，order_info 表里好像没有 'total_price' 字段？
-       这确实是个小缺陷。为了不改动数据库结构导致麻烦，
-       我们用一种简单的 "估算" 方法，或者遍历当前表格计算。
-    */
-
-    // 方案 B：直接遍历当前表格显示的记录来计算 (所见即所得)
-    double total = 0.0;
+    double totalIncome = 0.0;
     int rowCount = historyModel->rowCount();
 
-    // 我们需要知道单价。但是 historyModel 里默认可能没显示 price 列。
-    // 如果觉得麻烦，我们做一个最简单的：统计“已退房”的订单数量。
+    // 遍历表格里的每一行，算钱
+    for (int i = 0; i < rowCount; i++) {
+        // 1. 获取入住和退房时间
+        QString strIn = historyModel->record(i).value("check_in_date").toString();
+        QString strOut = historyModel->record(i).value("check_out_date").toString();
 
-    // ================== 升级版方案 ==================
-    // 统计当前筛选出来的订单数
-    ui->lblTotalIncome->setText(QString("当前查询结果共 %1 单").arg(rowCount));
+        // 2. 如果还没退房（时间为空），就不算它的钱
+        if (strOut.isEmpty()) continue;
+
+        // 3. 计算住了几天
+        QDateTime inDate = QDateTime::fromString(strIn, "yyyy-MM-dd HH:mm");
+        QDateTime outDate = QDateTime::fromString(strOut, "yyyy-MM-dd HH:mm");
+
+        if (inDate.isValid() && outDate.isValid()) {
+            qint64 secs = inDate.secsTo(outDate);
+            double days = secs / 86400.0; // 换算成天
+            if (days < 1.0) days = 1.0;   // 不足1天按1天算
+
+            // 4. 【核心】因为历史表没存房价，我们这里用“估算”
+            // 如果你想精确，可以用 SQL 联表查询，但这里为了作业演示，
+            // 我们假设平均房价是 288 元 (或者你可以根据房号判断价格)
+            double pricePerDay = 288.0;
+
+            // 高级一点：如果是 808 房，算 8888 元
+            int roomId = historyModel->record(i).value("room_id").toInt();
+            if (roomId == 808) pricePerDay = 8888.0;
+            else if (roomId >= 200) pricePerDay = 288.0;
+            else pricePerDay = 168.0;
+
+            totalIncome += days * pricePerDay;
+        }
+    }
+
+    // 5. 显示结果
+    ui->lblTotalIncome->setText(QString("当前列表总营收： %1 元").arg(QString::number(totalIncome, 'f', 2)));
+
+    // 顺便弹个窗炫耀一下
+    QMessageBox::information(this, "财务统计",
+                             QString("统计完成！\n\n共涉及订单： %1 单\n总营业额： %2 元")
+                                 .arg(rowCount)
+                                 .arg(totalIncome));
 }
 
