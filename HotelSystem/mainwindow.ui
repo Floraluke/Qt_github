@@ -102,7 +102,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="edtSearch"/>
+           <widget class="QLineEdit" name="edtSearch">
+            <property name="text">
+             <string>请输入住客姓名查找...</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="label">
