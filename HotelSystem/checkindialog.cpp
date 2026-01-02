@@ -3,12 +3,20 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QDateTime>
+#include <QRegularExpressionValidator>
 
 CheckInDialog::CheckInDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CheckInDialog)
 {
     ui->setupUi(this);
+    // 【新增】只允许输入 11 位数字
+    QRegularExpression rx("^1[3-9]\\d{9}$"); // 中国手机号正则
+    QValidator *validator = new QRegularExpressionValidator(rx, this);
+    ui->edtPhone->setValidator(validator);
+
+    // 也可以给 edtName 设个最大长度
+    ui->edtName->setMaxLength(10);
 }
 
 CheckInDialog::~CheckInDialog()
