@@ -31,6 +31,8 @@ private slots:
     void on_btnShowAll_clicked();
     void on_btnExport_clicked(); // 【新增】导出按钮槽函数
 
+    void on_btnStats_clicked();
+
 private:
     Ui::MainWindow *ui;
 

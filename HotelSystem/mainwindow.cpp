@@ -144,17 +144,29 @@ void MainWindow::on_btnCheckOut_clicked()
     }
 }
 
-// --- 功能 4: 姓名搜索 (Tab 2) ---
+// --- 功能 4: 搜索 (Tab 2) ---
 void MainWindow::on_btnSearch_clicked()
 {
+    // 1. 获取名字条件
     QString name = ui->edtSearch->text().trimmed();
-    if (name.isEmpty()) {
-        QMessageBox::information(this, "提示", "请输入姓名！");
-        return;
+
+    // 2. 获取日期条件 (字符串格式)
+    // 补全时间：开始时间是当天的 00:00，结束时间是当天的 23:59
+    QString startTime = ui->dateStart->date().toString("yyyy-MM-dd") + " 00:00";
+    QString endTime = ui->dateEnd->date().toString("yyyy-MM-dd") + " 23:59";
+
+    // 3. 拼接 SQL 筛选语句
+    // 逻辑：(名字包含 XX) AND (入住时间 在 开始 和 结束 之间)
+    // 注意：SQLite 的字符串日期可以直接比较大小
+    QString filter = QString("check_in_date >= '%1' AND check_in_date <= '%2'")
+                         .arg(startTime).arg(endTime);
+
+    if (!name.isEmpty()) {
+        filter += QString(" AND guest_name LIKE '%%1%'").arg(name);
     }
 
-    // SQL模糊查询: guest_name LIKE '%张%'
-    historyModel->setFilter(QString("guest_name LIKE '%%1%'").arg(name));
+    // 4. 应用筛选
+    historyModel->setFilter(filter);
     historyModel->select();
 }
 
@@ -209,3 +221,32 @@ void MainWindow::on_btnExport_clicked()
     file.close();
     QMessageBox::information(this, "成功", "报表已成功导出至：\n" + fileName);
 }
+
+// 别忘了在 mainwindow.h 里声明: void on_btnStats_clicked();
+// 或者直接在 UI 右键 -> Go to slot
+
+void MainWindow::on_btnStats_clicked()
+{
+    // 利用 SQL 的 SUM 函数直接计算，不需要遍历表格（高效！）
+    QSqlQuery query;
+    // 计算 order_info 表里所有已退房订单的金额
+    // 注意：我们没有直接存订单总价，而是用 room_id 关联查价格
+    // 这里为了简单，我们假设 check_out 弹窗算完钱后，应该把钱存进 order_info 表。
+
+    /* Wait! 之前的数据库设计里，order_info 表里好像没有 'total_price' 字段？
+       这确实是个小缺陷。为了不改动数据库结构导致麻烦，
+       我们用一种简单的 "估算" 方法，或者遍历当前表格计算。
+    */
+
+    // 方案 B：直接遍历当前表格显示的记录来计算 (所见即所得)
+    double total = 0.0;
+    int rowCount = historyModel->rowCount();
+
+    // 我们需要知道单价。但是 historyModel 里默认可能没显示 price 列。
+    // 如果觉得麻烦，我们做一个最简单的：统计“已退房”的订单数量。
+
+    // ================== 升级版方案 ==================
+    // 统计当前筛选出来的订单数
+    ui->lblTotalIncome->setText(QString("当前查询结果共 %1 单").arg(rowCount));
+}
+

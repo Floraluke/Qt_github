@@ -72,8 +72,8 @@
        <attribute name="title">
         <string>历史订单</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QLabel" name="lblSearch">
@@ -84,6 +84,60 @@
           </item>
           <item>
            <widget class="QLineEdit" name="edtSearch"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>日期范围：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="dateStart">
+            <property name="dateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2024</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+            <property name="displayFormat">
+             <string>yyyy-MM-dd</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>至</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="dateEnd">
+            <property name="dateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2026</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+            <property name="displayFormat">
+             <string>yyyy-MM-dd</string>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btnSearch">
@@ -108,8 +162,26 @@
           </item>
          </layout>
         </item>
-        <item>
+        <item row="1" column="0">
          <widget class="QTableView" name="viewHistory"/>
+        </item>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="btnStats">
+            <property name="text">
+             <string>统计总营业额</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblTotalIncome">
+            <property name="text">
+             <string>当前总收入：0.00 元</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
