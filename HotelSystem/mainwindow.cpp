@@ -5,6 +5,9 @@
 #include <QSqlRecord>
 #include "checkindialog.h"
 #include "checkoutdialog.h"
+#include <QFileDialog>
+#include <QTextStream>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -161,4 +164,48 @@ void MainWindow::on_btnShowAll_clicked()
     ui->edtSearch->clear();
     historyModel->setFilter(""); // 清除过滤
     historyModel->select();
+}
+
+void MainWindow::on_btnExport_clicked()
+{
+    // 1. 获取文件保存路径
+    QString fileName = QFileDialog::getSaveFileName(this, "导出报表",
+                                                    QDir::homePath() + "/酒店订单报表.csv",
+                                                    "CSV 文件 (*.csv)");
+    if (fileName.isEmpty()) {
+        return; // 用户点了取消
+    }
+
+    // 2. 打开文件准备写入
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "错误", "无法创建文件，请检查权限！");
+        return;
+    }
+
+    QTextStream out(&file);
+    // 处理中文乱码 (Excel通常默认GBK，或者带BOM的UTF8，这里用UTF8带BOM)
+    out.setEncoding(QStringConverter::Utf8);
+    out << "\xEF\xBB\xBF"; // 写入 BOM 头，防止 Excel 打开乱码
+
+    // 3. 写入表头
+    // 这里的列数要和你 historyModel 设置的列数一致
+    out << "订单号,房号,住客姓名,电话,入住时间,退房时间,状态\n";
+
+    // 4. 遍历 Model 数据写入文件
+    // historyModel 是我们在 initModel 里 new 出来的那个
+    for (int i = 0; i < historyModel->rowCount(); ++i) {
+        QStringList rowData;
+        for (int j = 0; j < 7; j++) { // 假设你有7列数据
+            // 获取第 i 行 第 j 列的数据
+            QString data = historyModel->record(i).value(j).toString();
+            // 处理一下可能含有的逗号（CSV里逗号是分隔符）
+            data.replace(",", "，");
+            rowData << data;
+        }
+        out << rowData.join(",") << "\n";
+    }
+
+    file.close();
+    QMessageBox::information(this, "成功", "报表已成功导出至：\n" + fileName);
 }

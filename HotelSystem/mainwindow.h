@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+// 【新增】引入文件操作相关头文件
+#include <QFile>
+#include <QFileDialog>
+#include <QTextStream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,6 +29,7 @@ private slots:
     void on_comboType_currentTextChanged(const QString &arg1);
     void on_btnSearch_clicked();
     void on_btnShowAll_clicked();
+    void on_btnExport_clicked(); // 【新增】导出按钮槽函数
 
 private:
     Ui::MainWindow *ui;
