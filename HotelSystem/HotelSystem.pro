@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     checkindialog.cpp \
     checkoutdialog.cpp \
+    logindialog.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -18,11 +19,13 @@ HEADERS += \
     checkindialog.h \
     checkoutdialog.h \
     connection.h \
+    logindialog.h \
     mainwindow.h
 
 FORMS += \
     checkindialog.ui \
     checkoutdialog.ui \
+    logindialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

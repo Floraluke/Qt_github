@@ -33,6 +33,10 @@ private slots:
 
     void on_btnStats_clicked();
 
+    void on_btnLogout_clicked();
+
+    void on_btnLogout_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 

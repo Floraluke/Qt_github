@@ -55,6 +55,13 @@
           <item>
            <widget class="QComboBox" name="comboType"/>
           </item>
+          <item>
+           <widget class="QPushButton" name="btnLogout">
+            <property name="text">
+             <string>注销登录</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -111,9 +118,9 @@
               <hour>0</hour>
               <minute>0</minute>
               <second>0</second>
-              <year>2024</year>
-              <month>1</month>
-              <day>1</day>
+              <year>2023</year>
+              <month>12</month>
+              <day>31</day>
              </datetime>
             </property>
             <property name="displayFormat">
@@ -138,9 +145,9 @@
               <hour>0</hour>
               <minute>0</minute>
               <second>0</second>
-              <year>2026</year>
-              <month>1</month>
-              <day>1</day>
+              <year>2025</year>
+              <month>12</month>
+              <day>31</day>
              </datetime>
             </property>
             <property name="displayFormat">
@@ -199,6 +206,13 @@
             </property>
             <property name="text">
              <string>当前总收入：0.00 元</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnLogout_2">
+            <property name="text">
+             <string>注销登录</string>
             </property>
            </widget>
           </item>

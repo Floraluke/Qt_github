@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QDateTime>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -290,4 +291,5 @@ void MainWindow::on_btnStats_clicked()
                                  .arg(rowCount)
                                  .arg(totalIncome));
 }
+
 
