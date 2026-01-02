@@ -47,6 +47,7 @@ void CheckOutDialog::setRoomInfo(int roomId, double price)
 
         double total = days * price;
 
+
         // 4. 显示金额 (保留2位小数)
         ui->lblPrice->setText(QString::number(total, 'f', 2) + " 元");
     } else {
