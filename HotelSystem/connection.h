@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 
+
 static bool createConnection()
 {
     // 1. 添加数据库驱动
@@ -20,6 +21,7 @@ static bool createConnection()
     }
 
     QSqlQuery query;
+
 
     // 3. 创建表结构 (如果没有则创建)
     // --- 客房表 ---
