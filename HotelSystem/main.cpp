@@ -1,23 +1,25 @@
 #include "mainwindow.h"
-#include "logindialog.h" // 【关键】引入登录窗口
+#include "logindialog.h"
 #include <QApplication>
-#include "connection.h"  // 引入数据库连接
+#include "connection.h"
+
+// 定义一个我们约定的暗号，防止魔法数字
+const int RESTART_CODE = 773;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // 1. 设置全局字体 (推荐微软雅黑，防锯齿)
+    // 1. 设置全局字体
     QFont font("Microsoft YaHei", 10);
     a.setFont(font);
 
-    // 2. 连接数据库 (如果连不上，后面都不用跑了)
+    // 2. 连接数据库 (只连一次即可)
     if (!createConnection()) {
         return -1;
     }
 
-    // ==================== 3. 设置豪华版 QSS 样式 ====================
-    // 放在这里设置，可以让 LoginDialog 和 MainWindow 都变漂亮
+    // 3. 设置样式表 (Styles)
     QString qss = R"(
         /* 0. 弹窗 (Dialog) 专属样式 */
         QDialog {
@@ -140,21 +142,28 @@ int main(int argc, char *argv[])
     )";
     a.setStyleSheet(qss); // 应用样式表
 
-    // ==================== 4. 登录拦截逻辑 ====================
-    LoginDialog login; // 先实例化登录窗
+    // ==================== 4. 核心循环逻辑 ====================
+    int currentExitCode = 0;
 
-    // exec() 会阻塞代码，直到登录窗关闭
-    // 如果返回 Accepted (在登录代码里调用的 accept())，说明登录成功
-    if (login.exec() == QDialog::Accepted) {
+    do {
+        // --- A. 弹出登录框 ---
+        LoginDialog login;
+        if (login.exec() != QDialog::Accepted) {
+            // 如果用户在登录界面点了“退出”或右上角X，直接结束程序
+            return 0;
+        }
 
-        // 登录成功，才创建主窗口
+        // --- B. 登录成功，进入主界面 ---
         MainWindow w;
-        w.setWindowTitle("酒店智能管理系统 v1.0"); // 设置标题
+        w.setWindowTitle("酒店智能管理系统 v1.0");
         w.show();
 
-        return a.exec(); // 进入主循环
-    } else {
-        // 如果登录取消或失败，直接退出程序
-        return 0;
-    }
+        // --- C. 进入主循环，等待窗口关闭 ---
+        // a.exec() 会阻塞在这里，直到 MainWindow 关闭
+        // 当我们在 MainWindow 里调用 qApp->exit(773) 时，a.exec() 就会返回 773
+        currentExitCode = a.exec();
+
+    } while (currentExitCode == RESTART_CODE); // 如果返回的是 773，就循环，再次弹出登录框
+
+    return currentExitCode;
 }

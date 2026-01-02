@@ -293,3 +293,26 @@ void MainWindow::on_btnStats_clicked()
 }
 
 
+void MainWindow::on_btnLogout_clicked()
+{
+
+    if (QMessageBox::question(this, "注销", "确定要退出当前账号吗？",
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {
+
+        qApp->exit(773);
+    }
+}
+
+
+void MainWindow::on_btnLogout_2_clicked()
+{
+
+    if (QMessageBox::question(this, "注销", "确定要退出当前账号吗？",
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+    {
+
+        qApp->exit(773);
+    }
+}
+

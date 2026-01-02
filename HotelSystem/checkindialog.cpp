@@ -4,6 +4,7 @@
 #include <QSqlQuery>
 #include <QDateTime>
 #include <QRegularExpressionValidator>
+#include <QRegularExpression>
 
 CheckInDialog::CheckInDialog(QWidget *parent) :
     QDialog(parent),
@@ -37,39 +38,29 @@ void CheckInDialog::on_btnCancel_clicked()
 
 void CheckInDialog::on_btnConfirm_clicked()
 {
-    // 1. 获取输入
-    QString name = ui->edtName->text();
-    QString phone = ui->edtPhone->text();
+    // 1. 获取用户输入
+    QString name = ui->edtName->text().trimmed(); // 去除首尾空格
+    QString phone = ui->edtPhone->text().trimmed();
 
-    if(name.isEmpty()) {
-        QMessageBox::warning(this, "提示", "姓名不能为空！");
-        return;
+    // 2. 校验姓名：不能为空
+    if (name.isEmpty()) {
+        QMessageBox::warning(this, "输入错误", "住客姓名不能为空！");
+        ui->edtName->setFocus(); // 光标跳回去
+        return; // 【关键】直接打断，不让代码往下走
     }
 
-    // 2. 数据库事务操作 (写订单 + 改房间状态)
-    QSqlDatabase::database().transaction(); // 开启事务
+    // 3. 校验手机号：必须符合格式 (1开头，11位数字)
+    // 正则表达式解释：^1 (1开头) + [3-9] (第二位是3-9) + \\d{9} (后面跟9个数字)
+    QRegularExpression rx("^1[3-9]\\d{9}$");
+    QRegularExpressionMatch match = rx.match(phone);
 
-    QSqlQuery query;
-    // A. 插入订单记录
-    query.prepare("INSERT INTO order_info (room_id, guest_name, phone_num, check_in_date) "
-                  "VALUES (:rid, :name, :phone, :time)");
-    query.bindValue(":rid", m_roomId);
-    query.bindValue(":name", name);
-    query.bindValue(":phone", phone);
-    query.bindValue(":time", QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm"));
-    bool step1 = query.exec();
-
-    // B. 更新房间状态为 1 (已入住)
-    query.prepare("UPDATE room_info SET status = 1 WHERE room_id = :rid");
-    query.bindValue(":rid", m_roomId);
-    bool step2 = query.exec();
-
-    if (step1 && step2) {
-        QSqlDatabase::database().commit(); // 提交事务
-        QMessageBox::information(this, "成功", "入住办理成功！");
-        accept(); // 关闭窗口并返回 QDialog::Accepted
-    } else {
-        QSqlDatabase::database().rollback(); // 回滚
-        QMessageBox::critical(this, "错误", "数据库写入失败！");
+    if (!match.hasMatch()) {
+        QMessageBox::warning(this, "输入错误", "请输入有效的 11 位手机号码！\n(例如：13800138000)");
+        ui->edtPhone->clear();
+        ui->edtPhone->setFocus();
+        return; // 【关键】打断！
     }
+
+    // 4. 只有上面都通过了，才允许通过
+    accept(); // 这句话一旦执行，主界面就会以为“成功了”并去读数据
 }
