@@ -122,6 +122,8 @@ int main(int argc, char *argv[])
             background-color: #6c5ce7; /* 导出按钮紫色 */
         }
 
+
+
         /* 6. 输入框美化 (通用) */
         QLineEdit, QComboBox, QDateEdit {
             border: 1px solid #b2bec3;
