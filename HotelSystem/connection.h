@@ -23,7 +23,6 @@ static bool createConnection()
 
     QSqlQuery query;
 
-
     // 3. 创建表结构 (如果没有则创建)
     // --- 客房表 ---
     query.exec("CREATE TABLE IF NOT EXISTS room_info ("

@@ -20,6 +20,7 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
+
 void LoginDialog::on_btnLogin_clicked()
 {
     QString user = ui->edtUser->text().trimmed();
