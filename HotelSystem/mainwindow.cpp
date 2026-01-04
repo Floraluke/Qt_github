@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboType->addItem("全部房型");
     ui->comboType->addItem("标准单人间");
     ui->comboType->addItem("豪华双人间");
-    ui->comboType->addItem("商务大床房"); // 【新增】
-    ui->comboType->addItem("行政套房");   // 【新增】
+    ui->comboType->addItem("商务大床房");
+    ui->comboType->addItem("行政套房");
     ui->comboType->addItem("总统套房");
 
 }
