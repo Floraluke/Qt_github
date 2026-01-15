@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
-// 【新增】引入文件操作相关头文件
+// 引入文件操作相关头文件
 #include <QFile>
 #include <QFileDialog>
 #include <QTextStream>
@@ -31,7 +31,7 @@ private slots:
     void on_btnShowAll_clicked();
     void on_btnExport_clicked(); // 【新增】导出按钮槽函数
 
-    void on_btnStats_clicked();
+    void on_btnStats_clicked();  //统计营业额的按钮
 
     void on_btnLogout_clicked();
 

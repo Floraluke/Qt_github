@@ -30,7 +30,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -124,7 +124,7 @@
               <second>0</second>
               <year>2023</year>
               <month>12</month>
-              <day>31</day>
+              <day>30</day>
              </datetime>
             </property>
             <property name="displayFormat">
@@ -151,7 +151,7 @@
               <second>0</second>
               <year>2025</year>
               <month>12</month>
-              <day>31</day>
+              <day>30</day>
              </datetime>
             </property>
             <property name="displayFormat">

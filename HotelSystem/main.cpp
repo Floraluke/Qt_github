@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
         // --- A. 弹出登录框 ---
         LoginDialog login;
         if (login.exec() != QDialog::Accepted) {
-            // 如果用户在登录界面点了“退出”或右上角X，直接结束程序
+            // 如果用户在登录界面点了“退出”或右上角的叉，直接结束程序
             return 0;
         }
 

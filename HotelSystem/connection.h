@@ -71,7 +71,7 @@ static bool createConnection()
         qDebug() << "数据库初始化完成：已生成大量空闲房间...";
     }
 
-    // 注意：这里我们故意不插入 order_info 的数据，这样历史订单就是空的！
+    // 注意：这里故意不插入 order_info 的数据，这样历史订单就是空的
 
     return true;
 }

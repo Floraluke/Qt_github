@@ -16,8 +16,8 @@ public:
     ~LoginDialog();
 
 private slots:
-    void on_btnLogin_clicked();
-    void on_btnExit_clicked();
+    void on_btnLogin_clicked();//登录按钮
+    void on_btnExit_clicked();//退出按钮
 
 private:
     Ui::LoginDialog *ui;

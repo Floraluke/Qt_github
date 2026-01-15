@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. 先初始化数据模型！(让 model 不再是空指针)
+    // 1. 先初始化数据模型(让 model 不再是空指针)
     // 这样即便后面触发了信号，槽函数里的 model->setFilter 也是安全的
     initModel();
 
@@ -241,8 +241,7 @@ void MainWindow::on_btnExport_clicked()
     QMessageBox::information(this, "成功", "报表已成功导出至：\n" + fileName);
 }
 
-// 别忘了在 mainwindow.h 里声明: void on_btnStats_clicked();
-// 或者直接在 UI 右键 -> Go to slot
+
 
 void MainWindow::on_btnStats_clicked()
 {
