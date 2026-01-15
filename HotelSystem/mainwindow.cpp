@@ -36,8 +36,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::initModel()
 {
-    // ================== Tab 1: 房态管理 ==================
-    // 创建视图 (把0/1转成文字)
+    // ================== Tab 1: 房态管理 (视图模型) ==================
+
+    // 创建视图，将数据库里的 0/1 状态转为中文显示
     QSqlQuery query;
     query.exec("CREATE VIEW IF NOT EXISTS room_view AS "
                "SELECT room_id, room_type, price, "
@@ -46,54 +47,60 @@ void MainWindow::initModel()
 
     model = new QSqlTableModel(this);
     model->setTable("room_view");
+
+    // 设置表头
     model->setHeaderData(0, Qt::Horizontal, "房号");
     model->setHeaderData(1, Qt::Horizontal, "房型");
-    model->setHeaderData(2, Qt::Horizontal, "单价");
-    model->setHeaderData(3, Qt::Horizontal, "状态");
-    model->select();
+    model->setHeaderData(2, Qt::Horizontal, "单价(元)");
+    model->setHeaderData(3, Qt::Horizontal, "当前状态");
+    model->select(); // 加载数据
 
+    // 配置 Tab 1 表格UI
     ui->tableView->setModel(model);
-    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // 自动铺满宽度
-    // Tab 1 的表格
-    ui->tableView->setAlternatingRowColors(true); // 【新增】开启隔行变色
-    // Tab 2 的表格
-    ui->viewHistory->setAlternatingRowColors(true); // 【新增】开启隔行变色
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers); // 禁止双击编辑
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows); // 选中整行
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch); // 自动铺满
+    ui->tableView->setAlternatingRowColors(true); // 隔行变色
 
-    // ================== Tab 2: 历史订单 ==================
+    // ================== Tab 2: 历史订单 (直连表) ==================
+
     historyModel = new QSqlTableModel(this);
     historyModel->setTable("order_info");
+    historyModel->select(); // 加载所有历史数据
 
-    // 设置表头中文
+    // 设置表头 (对应数据库字段顺序)
+    // 0:order_id, 1:room_id, 2:guest_name, 3:phone, 4:in_time, 5:out_time, 6:price, 7:active
     historyModel->setHeaderData(0, Qt::Horizontal, "订单号");
     historyModel->setHeaderData(1, Qt::Horizontal, "房号");
     historyModel->setHeaderData(2, Qt::Horizontal, "住客姓名");
-    historyModel->setHeaderData(3, Qt::Horizontal, "电话");
+    historyModel->setHeaderData(3, Qt::Horizontal, "联系电话");
     historyModel->setHeaderData(4, Qt::Horizontal, "入住时间");
     historyModel->setHeaderData(5, Qt::Horizontal, "退房时间");
-    historyModel->setHeaderData(6, Qt::Horizontal, "状态(1在住/0已退)");
+    historyModel->setHeaderData(6, Qt::Horizontal, "消费金额(元)"); // 【修正】这里是金额
+    // 第7列 is_active 是内部状态，不设置表头，直接隐藏
 
-    historyModel->select(); // 查询所有
-
+    // 配置 Tab 2 表格UI
     ui->viewHistory->setModel(historyModel);
     ui->viewHistory->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->viewHistory->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->viewHistory->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->viewHistory->setAlternatingRowColors(true);
 
-    // 隐藏不想显示的列（比如订单号）
-    ui->viewHistory->hideColumn(0);
+    // 隐藏不需要给用户看的列
+    ui->viewHistory->hideColumn(0); // 隐藏订单ID
+    ui->viewHistory->hideColumn(7); // 隐藏内部状态位(is_active)
 
-    // 【新增】双击 Tab 1 的表格，触发 Smart Action
+    // ================== 交互逻辑 ==================
+
+    // 双击 Tab 1 房间，自动判断是入住还是退房
     connect(ui->tableView, &QTableView::doubleClicked, this, [=](const QModelIndex &index){
-        // 获取状态
         QSqlRecord record = model->record(index.row());
         QString status = record.value("status_desc").toString();
 
         if (status == "空闲") {
-            on_btnCheckIn_clicked(); // 调用入住
+            on_btnCheckIn_clicked(); // 没人的话去入住
         } else {
-            on_btnCheckOut_clicked(); // 调用退房
+            on_btnCheckOut_clicked(); // 有人的话去退房
         }
     });
 }
@@ -221,7 +228,7 @@ void MainWindow::on_btnExport_clicked()
 
     // 3. 写入表头
     // 这里的列数要和你 historyModel 设置的列数一致
-    out << "订单号,房号,住客姓名,电话,入住时间,退房时间,状态\n";
+    out << "订单号,房号,住客姓名,电话,入住时间,退房时间,消费金额\n";
 
     // 4. 遍历 Model 数据写入文件
     // historyModel 是我们在 initModel 里 new 出来的那个
@@ -245,50 +252,32 @@ void MainWindow::on_btnExport_clicked()
 
 void MainWindow::on_btnStats_clicked()
 {
+    // 1. 刷新一下模型，确保拿到最新的退房数据
+    historyModel->select();
+
     double totalIncome = 0.0;
     int rowCount = historyModel->rowCount();
 
-    // 遍历表格里的每一行，算钱
+    // 2. 遍历表格，直接累加数据库里存好的 "total_price"
     for (int i = 0; i < rowCount; i++) {
-        // 1. 获取入住和退房时间
-        QString strIn = historyModel->record(i).value("check_in_date").toString();
-        QString strOut = historyModel->record(i).value("check_out_date").toString();
-
-        // 2. 如果还没退房（时间为空），就不算它的钱
-        if (strOut.isEmpty()) continue;
-
-        // 3. 计算住了几天
-        QDateTime inDate = QDateTime::fromString(strIn, "yyyy-MM-dd HH:mm");
-        QDateTime outDate = QDateTime::fromString(strOut, "yyyy-MM-dd HH:mm");
-
-        if (inDate.isValid() && outDate.isValid()) {
-            qint64 secs = inDate.secsTo(outDate);
-            double days = secs / 86400.0; // 换算成天
-            if (days < 1.0) days = 1.0;   // 不足1天按1天算
-
-            // 4. 【核心】因为历史表没存房价，我们这里用“估算”
-            // 如果你想精确，可以用 SQL 联表查询，但这里为了作业演示，
-            // 我们假设平均房价是 288 元 (或者你可以根据房号判断价格)
-            double pricePerDay = 288.0;
-
-            // 高级一点：如果是 808 房，算 8888 元
-            int roomId = historyModel->record(i).value("room_id").toInt();
-            if (roomId == 808) pricePerDay = 8888.0;
-            else if (roomId >= 200) pricePerDay = 288.0;
-            else pricePerDay = 168.0;
-
-            totalIncome += days * pricePerDay;
-        }
+        // 直接读 "total_price" 字段，不需要再算时间差了，那样容易有误差
+        // toDouble() 如果遇到空值会自动变成 0.0，非常安全
+        double price = historyModel->record(i).value("total_price").toDouble();
+        totalIncome += price;
     }
 
-    // 5. 显示结果
-    ui->lblTotalIncome->setText(QString("当前列表总营收： %1 元").arg(QString::number(totalIncome, 'f', 2)));
+    // 3. 更新界面上的大字标签
+    // 注意：请确认你 UI 界面上那个显示金额的 Label 名字是不是叫 lblTotalIncome
+    // 如果叫 lblTotalRevenue 或者其他名字，请在这里改一下！
+    ui->lblTotalIncome->setText(QString("当前总收入： %1 元").arg(QString::number(totalIncome, 'f', 2)));
 
-    // 顺便弹个窗炫耀一下
+    // 4. 弹窗显示详细信息
     QMessageBox::information(this, "财务统计",
-                             QString("统计完成！\n\n共涉及订单： %1 单\n总营业额： %2 元")
+                             QString("统计完成！\n\n"
+                                     "当前列表共有订单： %1 单\n"
+                                     "累计实际营业额： %2 元")
                                  .arg(rowCount)
-                                 .arg(totalIncome));
+                                 .arg(QString::number(totalIncome, 'f', 2)));
 }
 
 

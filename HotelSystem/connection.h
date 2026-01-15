@@ -39,6 +39,7 @@ static bool createConnection()
                "phone_num TEXT, "
                "check_in_date TEXT, "
                "check_out_date TEXT, "
+               "total_price REAL DEFAULT 0.0, "  // 【新增】存金额的字段
                "is_active INTEGER DEFAULT 1)");
 
     // 4. 【关键】判断表里有没有数据，如果没数据(说明是刚建的)，就批量插入房间
